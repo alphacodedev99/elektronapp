@@ -6,15 +6,19 @@ import logo from '../assets/logo.png';
 import { FaUser } from "react-icons/fa";
 import { MdFavoriteBorder } from "react-icons/md";
 import { FaShoppingCart } from "react-icons/fa";
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
+import CategoryComponent from './CategoryComponent';
 
 
 function NavbarComponent() {
 	return (
+        <>
 		<nav className='bg-mainBlue h-[100%] py-[10px] lg:py-0 lg:h-[100px] w-full flex items-center'>
 			<div className='container mx-auto  flex flex-col lg:flex-row  gap-[20px] justify-between items-center'>
 				<img src={logo} alt="logo" />
 
                 {/* TODO: Search Component */}
+    
                 <div className='bg-white rounded-[20px] flex'>
                     <input type="text" placeholder='Search products..' className='rounded-l-[20px] px-[25px] py-[17px] outline-none placeholder:text-mainOrange' />
                     <button className='bg-mainOrange rounded-r-[20px] px-[25px] text-textWhite'>Search</button>
@@ -23,8 +27,13 @@ function NavbarComponent() {
                 {/* General Info */}
                 <div className='flex gap-[20px] text-textWhite'>
                     <div className='flex items-center  gap-[10px]'>
-                        <FaUser size={24}/>
-                        <p>Clerk</p>
+                        <SignedOut>
+                            <SignInButton />
+                        </SignedOut>
+
+                        <SignedIn>
+                            <UserButton />
+                        </SignedIn>
                     </div>
                     <div className='flex items-center  gap-[10px]'>
                         <MdFavoriteBorder size={24}/>
@@ -41,7 +50,11 @@ function NavbarComponent() {
                 </div>
 
 			</div>
+
+            
 		</nav>
+        <CategoryComponent />
+        </>
 	);
 }
 
