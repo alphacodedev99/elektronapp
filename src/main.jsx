@@ -7,11 +7,14 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 // pages
 import HomePage from './pages/HomePage.jsx';
 import ErrorPage from './pages/ErrorPage.jsx'
+import SingleProductPage from './pages/SingleProductPage.jsx'
+import CartPage from './pages/CartPage.jsx'
 
 // Clerk
 import { ClerkProvider } from '@clerk/clerk-react'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
+
 
 
 // Import your publishable key
@@ -32,6 +35,14 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <HomePage />
+      },
+      {
+        path: '/singleProduct/:id',
+        element: <SingleProductPage />
+      },
+      {
+        path: '/cart',
+        element: <CartPage />
       }
     ]
   },

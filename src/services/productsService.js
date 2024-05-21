@@ -4,6 +4,7 @@ class ProductsService{
     // static getAllProducts
     static getAllCategory = () => axios.get('/products/categories');
     static getAllProducts = () => axios.get('/products');
+    static getSingleProduct = (id) => axios.get(`/products/${id}`);
 }
 
 

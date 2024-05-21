@@ -1,5 +1,5 @@
 // nav link
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 // logo
 import logo from '../assets/logo.png';
 // icons
@@ -15,7 +15,9 @@ function NavbarComponent() {
         <>
 		<nav className='bg-mainBlue h-[100%] py-[10px] lg:py-0 lg:h-[100px] w-full flex items-center'>
 			<div className='container mx-auto  flex flex-col lg:flex-row  gap-[20px] justify-between items-center'>
-				<img src={logo} alt="logo" />
+				<Link to='/'>
+                    <img src={logo} alt="logo" />
+                </Link>
 
                 {/* TODO: Search Component */}
     
@@ -38,13 +40,13 @@ function NavbarComponent() {
                     <div className='flex items-center  gap-[10px]'>
                         <MdFavoriteBorder size={24}/>
                         <span className='w-[25px] h-[25px] rounded-full bg-mainOrange text-textWhite flex items-center justify-center'>0</span>
-                        <NavLink to='/'>Favorite</NavLink>
+                        <NavLink to='/favorite'>Favorite</NavLink>
                        
                     </div>
                     <div className='flex items-center  gap-[10px]'>
                        <FaShoppingCart size={24}/>
                        <span className='w-[25px] h-[25px] rounded-full bg-mainOrange text-textWhite flex items-center justify-center'>0</span>
-                        <NavLink to='/'>Cart</NavLink>
+                        <NavLink to='/cart'>Cart</NavLink>
                   
                     </div>
                 </div>
