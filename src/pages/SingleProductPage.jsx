@@ -9,13 +9,17 @@ import { FaCheck } from 'react-icons/fa';
 import { ImCross } from 'react-icons/im';
 import { CiHeart } from 'react-icons/ci';
 // redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { saveInCartAction } from '../store/cartSlice';
+import { updateFavoriteAction } from '../store/favoriteSlice';
 
 function SingleProductPage() {
 	const [singleProduct, setSignleProduct] = useState({});
 	const [currentImage, setCurrentImage] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
+	const [favoriteIdIcon, setFavoriteIdIcon] = useState(null);
+
+	const {allFavorite} = useSelector((state) => state.favoriteStore);
 	// 1. UZMI ID HOOK
 	const { id } = useParams();
 
@@ -31,7 +35,24 @@ function SingleProductPage() {
 			.catch((err) => console.log(err));
 	}, []);
 
-	// 3. PRIKAZI GAA!!!
+	useEffect(() => {
+		// FIXME: Kad imamo vise od 1 proizvod u favorite, ne radi da obrise puno srce!
+		if(allFavorite.length > 0){
+			allFavorite.find((item) => {
+				if(item.id === parseInt(id)){
+					setFavoriteIdIcon(item.id);
+					return;
+				}
+			})
+		}else{
+			setFavoriteIdIcon(null);
+			console.log('BRISE')
+		}
+		
+		
+		
+		
+	}, [allFavorite])
 
 	// change image
 	function handleImage(index) {
@@ -109,9 +130,11 @@ function SingleProductPage() {
 								Add Cart
 							</Link>
 							<Link
-								to='/'
-								className='px-[24px] py-[12px] bg-mainBlue hover:bg-mainOrange transition-all text-textWhite rounded-xl flex items-center justify-center'>
-								<CiHeart size={32} />
+								to={favoriteIdIcon ? `/singleProduct/${id}` : '/favorite'} 
+								className='px-[24px] py-[12px] bg-mainBlue hover:bg-mainOrange transition-all text-textWhite rounded-xl flex items-center justify-center'
+								onClick={() => dispatch(updateFavoriteAction(singleProduct))}
+								>
+								{favoriteIdIcon === parseInt(id) ? <CiHeart size={32} color='red' /> : <CiHeart size={32} /> } 
 							</Link>
 						</div>
 					</div>
