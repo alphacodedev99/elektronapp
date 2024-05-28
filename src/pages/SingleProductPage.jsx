@@ -8,6 +8,9 @@ import { Rating } from '@mui/material';
 import { FaCheck } from 'react-icons/fa';
 import { ImCross } from 'react-icons/im';
 import { CiHeart } from 'react-icons/ci';
+// redux
+import { useDispatch } from 'react-redux';
+import { saveInCartAction } from '../store/cartSlice';
 
 function SingleProductPage() {
 	const [singleProduct, setSignleProduct] = useState({});
@@ -15,6 +18,8 @@ function SingleProductPage() {
 	const [isLoading, setIsLoading] = useState(false);
 	// 1. UZMI ID HOOK
 	const { id } = useParams();
+
+	const dispatch = useDispatch();
 
 	// 2. Poslati Request - Service - da uzmemo taj 1 prozivod po ID-u
 	useEffect(() => {
@@ -31,6 +36,12 @@ function SingleProductPage() {
 	// change image
 	function handleImage(index) {
 		setCurrentImage(index);
+	}
+
+
+	// to save in redux cart
+	function handleAddCart(){
+		dispatch(saveInCartAction(singleProduct))
 	}
 	return (
 		<div className='px-[20px]'>
@@ -93,7 +104,7 @@ function SingleProductPage() {
 							<Link
 								to='/cart'
 								className='px-[24px] py-[12px] bg-mainBlue hover:bg-mainOrange transition-all text-textWhite rounded-xl flex items-center justify-center'
-								
+								onClick={handleAddCart}
 								>
 								Add Cart
 							</Link>

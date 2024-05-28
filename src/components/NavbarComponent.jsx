@@ -8,9 +8,14 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { FaShoppingCart } from "react-icons/fa";
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import CategoryComponent from './CategoryComponent';
+import { useSelector } from 'react-redux';
 
 
 function NavbarComponent() {
+
+    const {totalProduct} = useSelector(state => state.cartStore);
+
+
 	return (
         <>
 		<nav className='bg-mainBlue h-[100%] py-[10px] lg:py-0 lg:h-[100px] w-full flex items-center'>
@@ -45,7 +50,7 @@ function NavbarComponent() {
                     </div>
                     <div className='flex items-center  gap-[10px]'>
                        <FaShoppingCart size={24}/>
-                       <span className='w-[25px] h-[25px] rounded-full bg-mainOrange text-textWhite flex items-center justify-center'>0</span>
+                       <span className='w-[25px] h-[25px] rounded-full bg-mainOrange text-textWhite flex items-center justify-center'>{totalProduct}</span>
                         <NavLink to='/cart'>Cart</NavLink>
                   
                     </div>
