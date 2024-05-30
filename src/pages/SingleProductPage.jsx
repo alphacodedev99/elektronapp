@@ -36,23 +36,24 @@ function SingleProductPage() {
 	}, []);
 
 	useEffect(() => {
-		// FIXME: Kad imamo vise od 1 proizvod u favorite, ne radi da obrise puno srce!
+		
 		if(allFavorite.length > 0){
 			allFavorite.find((item) => {
 				if(item.id === parseInt(id)){
-					setFavoriteIdIcon(item.id);
+
+					setFavoriteIdIcon(item.favoriteActive);
 					return;
 				}
 			})
 		}else{
-			setFavoriteIdIcon(null);
+			setFavoriteIdIcon(false);
 			console.log('BRISE')
 		}
 		
 		
 		
 		
-	}, [allFavorite])
+	}, [allFavorite,favoriteIdIcon])
 
 	// change image
 	function handleImage(index) {
@@ -132,9 +133,12 @@ function SingleProductPage() {
 							<Link
 								to={favoriteIdIcon ? `/singleProduct/${id}` : '/favorite'} 
 								className='px-[24px] py-[12px] bg-mainBlue hover:bg-mainOrange transition-all text-textWhite rounded-xl flex items-center justify-center'
-								onClick={() => dispatch(updateFavoriteAction(singleProduct))}
+								onClick={() => {
+									dispatch(updateFavoriteAction(singleProduct))
+									setFavoriteIdIcon(false);
+								}}
 								>
-								{favoriteIdIcon === parseInt(id) ? <CiHeart size={32} color='red' /> : <CiHeart size={32} /> } 
+								{favoriteIdIcon ? <CiHeart size={32} color='red' /> : <CiHeart size={32} /> } 
 							</Link>
 						</div>
 					</div>

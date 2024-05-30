@@ -25,7 +25,7 @@ const favoriteSlice = createSlice({
 
             // DODAJ NOVI PROZIVOD ILI UVECAJ POSTOJECI!!
             if(findIndex === null){
-                copyFavorite.push(action.payload)
+                copyFavorite.push({...action.payload, favoriteActive: true})
                state.favoriteTotal++;
             }else{
                 copyFavorite.splice(findIndex,1);
