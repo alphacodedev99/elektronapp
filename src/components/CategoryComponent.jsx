@@ -1,41 +1,55 @@
-import React, { useEffect, useState } from 'react'
-import ProductsService from '../services/productsService'
-import { useDispatch, useSelector } from 'react-redux'
-import { saveAllCategoryAction } from '../store/productsSlice';
+import React, { useEffect, useState } from 'react';
+import ProductsService from '../services/productsService';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveAllCategoryAction, setCategoryAction } from '../store/productsSlice';
 
 function CategoryComponent() {
+	const [isActive, setIsActive] = useState(false);
+	// const [currentCategory, setCurrentCategory] = useState('');
+	const { allCategory,selectCategory } = useSelector((state) => state.productStore);
 
-    const [isActive, setIsActive] = useState(false);
+	const dispatch = useDispatch();
 
-    const {allCategory} = useSelector(state => state.productStore);
+	useEffect(() => {
+		ProductsService.getAllCategory()
+			.then((res) => dispatch(saveAllCategoryAction(res.data)))
+			.catch((err) => console.log(err));
+	}, []);
 
-    const dispatch = useDispatch();
+	function handleActiveCategory() {
+		setIsActive(!isActive);
+	}
 
-  useEffect(() => {
+	function handleCategory(category){
+		dispatch(setCategoryAction(category))
+	}
 
-    ProductsService.getAllCategory()
-            .then(res => dispatch(saveAllCategoryAction(res.data)))
-            .catch(err => console.log(err))
 
-  }, [])
+	return (
+		<div className='bg-[#f4f4f4] py-[20px] h-[100%] lg:h-[400px] xl:h-[300px] flex items-center'>
+			<div className='container mx-auto flex flex-col lg:flex-row items-center gap-[20px]'>
+				<button
+					onClick={handleActiveCategory}
+					className='bg-mainBlue text-textWhite px-[15px] py-[10px] rounded-[10px] hover:bg-mainOrange transition-all duration-500 ease-in-out'>
+					Show Category
+				</button>
 
-  function handleActiveCategory(){
-    setIsActive(!isActive);
-  }
-
-  return (
-    <div className='bg-[#f4f4f4] py-[20px] h-[100%] lg:h-[400px] xl:h-[300px] flex items-center'>
-        <div className="container mx-auto flex flex-col lg:flex-row items-center gap-[20px]">
-            <button onClick={handleActiveCategory} className='bg-mainBlue text-textWhite px-[15px] py-[10px] rounded-[10px] hover:bg-mainOrange transition-all duration-500 ease-in-out'>Show Category</button>
-
-            <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[10px]'>
-                {isActive ? allCategory.map((cat,index) => {
-                    return <li key={index} className='bg-mainBlue text-textWhite px-[16px] py-[8px] w-[250px] text-center rounded-lg cursor-pointer hover:bg-mainOrange transition-all'>{cat}</li>
-                }) : null}
-            </ul>
-        </div>
-    </div>
-  )
+				<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[10px]'>
+					{isActive
+						? allCategory.map((cat, index) => {
+								return (
+									<li
+										onClick={() => handleCategory(cat)}
+										key={index}
+										className={cat === selectCategory ? 'bg-mainOrange text-textWhite px-[16px] py-[8px] w-[250px] text-center rounded-lg cursor-pointer hover:bg-mainOrange transition-all' : 'bg-mainBlue text-textWhite px-[16px] py-[8px] w-[250px] text-center rounded-lg cursor-pointer hover:bg-mainOrange transition-all'}>
+										{cat}
+									</li>
+								);
+						  }) : null}
+				</ul>
+			</div>
+		</div>
+	);
 }
 
-export default CategoryComponent
+export default CategoryComponent;

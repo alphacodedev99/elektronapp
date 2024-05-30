@@ -77,7 +77,7 @@ function SingleProductPage() {
 							className='w-full h-[400px] object-cover'
 						/>
 						{/* small images from products */}
-						<div className='flex justify-between'>
+						<div className='flex justify-center gap-[10px]'>
 							{singleProduct.images.map((el, index) => {
 								return (
 									<img

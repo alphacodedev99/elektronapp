@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // products
 import ProductsService from '../services/productsService';
@@ -15,7 +15,10 @@ import { CiGrid41 } from "react-icons/ci";
 
 
 function HomePage() {
-	const { isLoading, allProducts } = useSelector(
+  const [activeView, setActiveView] = useState('gridView');
+
+
+	const { isLoading, allProducts, searchTitle,selectCategory } = useSelector(
 		(state) => state.productStore
 	);
 
@@ -29,21 +32,44 @@ function HomePage() {
 			.catch((err) => console.log(err));
 	}, []);
 
+  useEffect(() => {
+    ProductsService.getSearchProduct(searchTitle)
+      .then(res => dispatch(saveAllProductsAction(res.data.products)))
+      .catch(err => console.log(err))
+  }, [searchTitle])
+
+  useEffect(() => {
+    if(selectCategory){
+      ProductsService.getProductsByCategory(selectCategory)
+      .then(res => dispatch(saveAllProductsAction(res.data.products)))
+      .catch(err => console.log(err))
+    }
+  }, [selectCategory])
+
+
 	return (
     <main className='mt-[50px] container mx-auto'>
         {/* list/grid view */}
 
         <div className='flex gap-[20px] justify-end mb-[30px]'>
-          <FaList size={32} className='cursor-pointer'/>
-          <CiGrid41 size={32} className='cursor-pointer'/>
+          <FaList 
+            size={42} 
+            className={activeView === 'listView' ? 'cursor-pointer bg-mainOrange p-[5px] rounded-lg'  : 'p-[5px]' }
+            onClick={() => setActiveView('listView')}  
+          />
+          <CiGrid41 
+            size={42} 
+            className={activeView === 'gridView' ? 'cursor-pointer bg-mainOrange p-[5px] rounded-lg' : 'p-[5px]' }
+            onClick={() => setActiveView('gridView')}
+            />
         </div>
 
 
           {/* Our Products */}
-            <div className='flex flex-wrap items-center justify-center gap-[20px]'>
+            <div className={activeView === 'gridView' ? 'flex flex-wrap items-center justify-center gap-[20px]' : 'flex flex-col flex-wrap items-center justify-center gap-[20px]'}>
           {isLoading ? (
             allProducts.map((product) => (
-              <CardProductComponent key={product.id} product={product} />
+              <CardProductComponent key={product.id} product={product} activeView={activeView} />
             ))
           ) : (
             <LoadingComponent />

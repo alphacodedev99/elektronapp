@@ -15,6 +15,7 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
 import FavoritePage from './pages/FavoritePage.jsx'
+import AuthGuarding from './utils/AuthGuarding.jsx'
 
 
 
@@ -39,7 +40,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/singleProduct/:id',
-        element: <SingleProductPage />
+        element: <AuthGuarding>
+          <SingleProductPage />
+        </AuthGuarding>
       },
       {
         path: '/cart',
