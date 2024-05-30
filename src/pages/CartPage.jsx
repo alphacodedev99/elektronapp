@@ -133,7 +133,7 @@ function CartPage() {
 					<div className='flex flex-col gap-[20px] mt-[30px]'>
 						<h2>Total Price:</h2>
 						<span className='text-[30px] font-bold'>
-							${currentCoupon === 'alphacode' ? Math.floor(totalPrice) / 2 : Math.floor(totalPrice)}
+							${currentCoupon === 'alphacode' ? Math.floor(totalPrice) / 2 : Math.round(totalPrice * 100) / 100}
 						</span>
 
 						<input

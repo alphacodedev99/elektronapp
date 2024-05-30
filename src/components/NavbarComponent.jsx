@@ -35,7 +35,7 @@ function NavbarComponent() {
 			setTotalItem(localStorage.getItem('total_item'));
 		}
 		// console.log('izmenio si totalProduct')
-	}, [totalProduct]);
+	}, [totalProduct, totalItem]);
 
 	function handleInputSearch(event){
 		setCurrentSearch(event.target.value);
